@@ -1,7 +1,7 @@
-prueba1_flutter
+ConexionLectora
 2.7
-file:///C:/Users/Andres%20Eloy%20Iporre/Desktop/Semestre%201-2021/movil/pruebaMovil/prueba1_flutter/
-file:///C:/Users/Andres%20Eloy%20Iporre/Desktop/Semestre%201-2021/movil/pruebaMovil/prueba1_flutter/lib/
+file:../ConexionLectora/
+file:../ConexionLectora/lib/
 async
 2.12
 file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.5.0/
