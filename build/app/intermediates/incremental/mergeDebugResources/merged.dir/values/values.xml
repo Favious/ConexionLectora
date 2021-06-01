@@ -75,6 +75,13 @@
     <item name="text2" type="id"/>
     <item name="title" type="id"/>
     <integer name="status_bar_notification_info_maxnum">999</integer>
+    <string name="default_web_client_id" translatable="false">104581802287-8pc749nlgulbe0kmpnos3o4iou8aork5.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">104581802287</string>
+    <string name="google_api_key" translatable="false">AIzaSyBJaQqMTWlzzIX9WKL6255wNVzUaOtkdm0</string>
+    <string name="google_app_id" translatable="false">1:104581802287:android:ebf6218b45d544578bd9da</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBJaQqMTWlzzIX9WKL6255wNVzUaOtkdm0</string>
+    <string name="google_storage_bucket" translatable="false">conexion-lectora.appspot.com</string>
+    <string name="project_id" translatable="false">conexion-lectora</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <!-- Show a splash screen on the activity. Automatically removed when
