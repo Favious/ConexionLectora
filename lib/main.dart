@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: title,
         theme: ThemeData(
-          primaryColor: Colors.deepPurple[800],
+          primaryColor: const Color(0xFF4f1bb7),
           scaffoldBackgroundColor: Colors.black,
         ),
         home: MainPage(title: title),
@@ -56,7 +56,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.deepPurple[800],
+          backgroundColor: const Color(0xFF4f1bb7),
           child: Icon(
             Icons.qr_code,
           ),
