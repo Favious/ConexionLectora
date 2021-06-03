@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'register.dart';
+
 class LoginPage  extends StatefulWidget {
  static String id = 'login_page';
   @override
@@ -116,7 +118,9 @@ class _LoginPageState extends State<LoginPage > {
           ),
           elevation: 10.0,
           color: const Color(0xFF4f1bb7),
-          onPressed: (){}
+          onPressed: (){
+            Navigator.of(context).pushNamed(RegisterPage.id);
+          }
         );
       }
     );
