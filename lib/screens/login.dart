@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'collections.dart';
 import 'register.dart';
 
 class LoginPage  extends StatefulWidget {
@@ -95,7 +96,9 @@ class _LoginPageState extends State<LoginPage > {
           ),
           elevation: 10.0,
           color: const Color(0xFF4f1bb7),
-          onPressed: (){}
+          onPressed: (){
+            Navigator.of(context).pushNamed(CollectionsPage.id);
+          }
         );
       }
     );
