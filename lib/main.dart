@@ -1,97 +1,129 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 void main() {
-  runApp(MyApp());
+  runApp(new MaterialApp(
+      title: "Conexión lectora",
+      theme: new ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFEFEFEF),
+        backgroundColor: Colors.white,
+      ),
+      home: new Scaffold(
+        body: new Column(
+          children: [
+            new Container(
+                padding: EdgeInsets.all(20),
+                child: Center(
+                    child: new Text(
+                  "COLECCIONES",
+                  style: new TextStyle(
+                    // fontFamily: 'Comic-Sans',
+                    fontSize: 30,
+                    color: Colors.blue,
+                    decoration: TextDecoration.none,
+                  ),
+                ))),
+            new ButtonCollection(
+                name: "Academicos", bookCantity: 2, color: Color(0xFF33a198)),
+            new ButtonCollection(
+                name: "Interesantes", bookCantity: 0, color: Color(0xFF0566ab)),
+            new ButtonCollection(
+                name: "Entretenidos", bookCantity: 0, color: Color(0xFFd35ee6)),
+            new ButtonCollection(
+                name: "Curiosos", bookCantity: 0, color: Color(0xFFe3a412)),
+            new ButtonCollection(
+                name: "Historicos", bookCantity: 0, color: Color(0xFFf2e70c)),
+          ],
+          mainAxisSize: MainAxisSize.max,
+        ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      )));
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class ButtonCollection extends StatelessWidget {
+  final String name;
+  final int bookCantity;
+  final Color color;
+
+  const ButtonCollection({this.name, this.bookCantity, this.color});
+  // : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+        padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+        child: new SizedBox(
+          // padding: EdgeInsets.only(left: 10, right: 10),
+          height: 60,
+          child: new TextButton(
+            onPressed: () {},
+            style: new ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
+                backgroundColor: MaterialStateProperty.all<Color>(color),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ))),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                  name,
+                  style: new TextStyle(color: Colors.black),
+                ),
+                Text(
+                  bookCantity.toString(),
+                  style: new TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+
+// ViewBookList
+
+class ViewBookList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Booklist',
+      home: Body(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+class Body extends StatefulWidget {
+  Body({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _BodyState createState() => _BodyState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _BodyState extends State<Body> {
   int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Text(
               'You have pushed the button this many times:',
@@ -100,14 +132,98 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            new BookDescriptionButton(
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIYQMj6_wAxR3S4-2YIdKhdTwMEpVNU4ToNA&usqp=CAU',
+                'to kill a moking bird',
+                'i dont know',
+                10),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class BookDescriptionButton extends StatelessWidget {
+  final String coverPagePath;
+  final String bookName;
+  final String authorName;
+  final int percent;
+
+  const BookDescriptionButton(
+      this.coverPagePath, this.bookName, this.authorName, this.percent);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+        child: new SizedBox(
+          height: 60,
+          child: new TextButton(
+            onPressed: () {},
+            style: new ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(5)),
+            ),
+            child: new Row(
+              children: [
+                CoverPage(coverPagePath),
+                SizedBox(
+                  width: 20,
+                ),
+                new Flexible(
+                  child: BookInfo(bookName, authorName, percent),
+                  flex: 1,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text("$percent%"),
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+class BookInfo extends StatelessWidget {
+  final String bookName;
+  final String authorName;
+  final int percent;
+
+  const BookInfo(this.bookName, this.authorName, this.percent);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(bookName),
+        Text(authorName),
+        SizedBox(
+          height: 5,
+          width: double.infinity,
+          child: LinearProgressIndicator(
+            value: percent / 100,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CoverPage extends StatelessWidget {
+  final String path;
+
+  const CoverPage(this.path);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: new Image.network(
+        path,
+        height: 60,
+      ),
     );
   }
 }
