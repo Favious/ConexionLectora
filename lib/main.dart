@@ -1,6 +1,7 @@
 //import 'dart:html';
 import 'package:conexion_lectora/screens/books.dart';
 import 'package:conexion_lectora/screens/login.dart';
+import 'package:conexion_lectora/screens/pdfviewer.dart';
 import 'package:conexion_lectora/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         LoginPage.id : (context)=> LoginPage(),
         RegisterPage.id : (context)=> RegisterPage(),
         CollectionsPage.id : (context)=> CollectionsPage(),
-        ViewBookList.id : (context)=> ViewBookList()
+        ViewBookList.id : (context)=> ViewBookList(),
+        PDFViewerPage.id : (context)=> PDFViewerPage()
       },
       );
   }

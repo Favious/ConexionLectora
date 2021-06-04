@@ -1,3 +1,4 @@
+import 'package:conexion_lectora/screens/pdfviewer.dart';
 import 'package:flutter/material.dart';
 
 class ViewBookList extends StatefulWidget {
@@ -48,7 +49,9 @@ class BookDescriptionButton extends StatelessWidget {
         child: SizedBox(
           height: 60,
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(PDFViewerPage.id);
+            },
             style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(5)),
             ),
