@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'main.dart';
 class sign_in_page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -112,10 +114,33 @@ class sign_in_page extends StatelessWidget {
           elevation: 10.0,
           color: Colors.blueAccent[100],
           onPressed:(){
-            //signIn(context);
+            signedIn(context);
           } 
         );
       }
     );
   
+}
+
+Future<void> signedIn(context) async {
+  try {
+  /*AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    email: "test123@gmail.com",
+    password: "test123"
+  );*/
+  AuthResult user =await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    email: "test12345@gmail.com", password: "test12345"
+    );
+  //BuildContext context;
+  Navigator.push(context, MaterialPageRoute(builder: (context)=>MyApp()));
+  print('valido la cuenta');
+  print(user.toString());
+  }catch (e) {
+  if (e.code == 'user-not-found') {
+    print('No user found for that email.');
+  } else if (e.code == 'wrong-password') {
+    print('Wrong password provided for that user.');
+  }
+  print('no se registro');
+  }
 }

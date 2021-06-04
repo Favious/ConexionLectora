@@ -8,10 +8,6 @@
         "source": "D:\\Materias\\programacion movil\\ConexionLectora\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
     },
     {
-        "merged": "D:\\Materias\\programacion movil\\ConexionLectora\\build\\app\\intermediates\\res\\merged\\debug\\drawable_launch_background.xml.flat",
-        "source": "D:\\Materias\\programacion movil\\ConexionLectora\\android\\app\\src\\main\\res\\drawable\\launch_background.xml"
-    },
-    {
         "merged": "D:\\Materias\\programacion movil\\ConexionLectora\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
         "source": "D:\\Materias\\programacion movil\\ConexionLectora\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     },
