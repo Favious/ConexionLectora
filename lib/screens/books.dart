@@ -68,7 +68,12 @@ class BookDescriptionButton extends StatelessWidget {
                 SizedBox(
                   width: 20,
                 ),
-                Text("$percent%"),
+                Text(
+                  "$percent%",
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
               ],
             ),
           ),
@@ -102,6 +107,7 @@ class BookInfo extends StatelessWidget {
           width: double.infinity,
           child: LinearProgressIndicator(
             value: percent / 100,
+            backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
           ),
         ),
       ],

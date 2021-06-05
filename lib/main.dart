@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
         primaryColor: const Color(0xFF4f1bb7),
+        accentColor: const Color(0xFF4f1bb7),
         textTheme: TextTheme(
           headline6: TextStyle(
             // estilo para titulo del libro
