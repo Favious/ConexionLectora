@@ -25,15 +25,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
         primaryColor: const Color(0xFF4f1bb7),
+        textTheme: TextTheme(
+          headline6: TextStyle(
+            // estilo para titulo del libro
+            color: Colors.black,
+            fontSize: 18,
+          ),
+          headline5: TextStyle(
+            // estilo para el nombre del autor
+            color: Colors.grey,
+            fontSize: 15,
+          ),
+        ),
       ),
       initialRoute: LoginPage.id,
       routes: {
-        LoginPage.id : (context)=> LoginPage(),
-        RegisterPage.id : (context)=> RegisterPage(),
-        CollectionsPage.id : (context)=> CollectionsPage(),
-        ViewBookList.id : (context)=> ViewBookList(),
-        PDFViewerPage.id : (context)=> PDFViewerPage()
+        LoginPage.id: (context) => LoginPage(),
+        RegisterPage.id: (context) => RegisterPage(),
+        CollectionsPage.id: (context) => CollectionsPage(),
+        ViewBookList.id: (context) => ViewBookList(),
+        PDFViewerPage.id: (context) => PDFViewerPage()
       },
-      );
+    );
   }
 }

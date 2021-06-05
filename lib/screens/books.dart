@@ -7,7 +7,7 @@ class ViewBookList extends StatefulWidget {
   _ViewBookListState createState() => _ViewBookListState();
 }
 
-class _ViewBookListState extends State<ViewBookList>  {
+class _ViewBookListState extends State<ViewBookList> {
   int _counter = 0;
 
   @override
@@ -89,11 +89,13 @@ class BookInfo extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(bookName),
-        Text(authorName,
-          style: TextStyle(
-            color: Colors.grey
-          )
+        Text(
+          bookName,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        Text(
+          authorName,
+          style: Theme.of(context).textTheme.headline5,
         ),
         SizedBox(
           height: 5,
