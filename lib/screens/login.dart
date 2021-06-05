@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage > {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Flexible(
-                 child: Image.asset('../assets/conexion.png',
+                 child: Image.asset('assets/conexion.png',
                  height: 250.0,
                  ),
               ),
