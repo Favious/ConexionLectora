@@ -1,0 +1,4 @@
+#Sun Jun 06 16:25:25 BOT 2021
+base.0=C\:\\Users\\Manuel\\Documents\\GitHub\\ConexionLectora\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
