@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'login.dart';
 
 class RegisterPage  extends StatefulWidget {
  static String id = 'register_page';
@@ -71,9 +73,34 @@ class _RegisterPageState extends State<RegisterPage > {
           ),
           elevation: 10.0,
           color: const Color(0xFF4f1bb7),
-          onPressed: (){}
+          onPressed: (){
+            signedIn(context);
+          }
         );
       }
     );
+  }
+}
+Future<void> signedIn(context) async {
+  try {
+  /*AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    email: "test123@gmail.com",
+    password: "test123"
+  );*/
+  AuthResult user =await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    email: "nogalesrafael12@gmail.com", password: "test12345"
+    );
+  //BuildContext context;
+  //Navigator.push(context, MaterialPageRoute(builder: (context)=>Home_page()));
+  Navigator.of(context).pushNamed(LoginPage.id);
+  print('valido la cuenta');
+  print(user.toString());
+  }catch (e) {
+  if (e.code == 'user-not-found') {
+    print('No user found for that email.');
+  } else if (e.code == 'wrong-password') {
+    print('Wrong password provided for that user.');
+  }
+  print('no se registro');
   }
 }
