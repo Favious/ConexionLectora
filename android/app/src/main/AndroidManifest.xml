@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.conexion_lectora">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Conexión Lectora"
         android:icon="@mipmap/ic_launcher"

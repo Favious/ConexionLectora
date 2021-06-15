@@ -1,44 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 
-class PDFViewerPage extends StatefulWidget {
+void main() => runApp(PDFView());
+
+class PDFView extends StatefulWidget {
   static String id = 'pdf_viewer_page';
   @override
-  _PDFViewerPageState createState() => _PDFViewerPageState();
+  _PDFViewState createState() => _PDFViewState();
 }
 
-class _PDFViewerPageState extends State<PDFViewerPage> {
-  
-  String url= "http://conorlastowka.com/book/CitationNeededBook-Sample.pdf";
-  String pdfasset ="assets/sample.pdf";
-  PDFDocument _doc;
-  bool _loading;
+class _PDFViewState extends State<PDFView> {
+  bool _isLoading = true;
+  PDFDocument document;
+
   @override
   void initState() {
-    
     super.initState();
-    _initPdf();
+    loadDocument();
   }
 
-   _initPdf() async {
-     
-      setState(() {
-        _loading=true;
-      });
-      PDFDocument docu= await PDFDocument.fromURL(url);
-      final doc = docu;
-      
-      setState(() {
-        _doc=doc;
-        _loading=false;
-      });
-      
-    }
+  loadDocument() async {
+    document = await PDFDocument.fromURL('https://germarmu.files.wordpress.com/2014/09/resumen-cien-ac3b1os-de-soledad-mc3a1rquez.pdf');
+
+
+    setState(() => _isLoading = false);
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Visualizador de PDF"),),
-      body: _loading ? Center(child: CircularProgressIndicator(),): PDFViewer(document: _doc),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('FlutterPluginPDFViewer'),
+        ),
+        body: Center(
+          child: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : PDFViewer(
+                  document: document,
+                  zoomSteps: 1,
+                  //uncomment below line to preload all pages
+                   lazyLoad: false,
+                  // uncomment below line to scroll vertically
+                   scrollDirection: Axis.vertical,
+
+                  //uncomment below code to replace bottom navigation with your own
+                   navigationBuilder:
+                      (context, page, totalPages, jumpToPage, animateToPage) {
+                    return ButtonBar(
+                      alignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.first_page),
+                          onPressed: () {
+                            jumpToPage(page: 0);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.arrow_back),
+                          onPressed: () {
+                            animateToPage(page: page - 2);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.arrow_forward),
+                          onPressed: () {
+                            animateToPage(page: page);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.last_page),
+                          onPressed: () {
+                            jumpToPage(page: totalPages - 1);
+                          },
+                        ),
+                      ],
+                    );
+                  }, 
+                ),
+        ),
+      ),theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
     );
   }
 }

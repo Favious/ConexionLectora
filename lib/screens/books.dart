@@ -50,7 +50,7 @@ class BookDescriptionButton extends StatelessWidget {
           height: 60,
           child: TextButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(PDFViewerPage.id);
+              Navigator.of(context).pushNamed(PDFView.id);
             },
             style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(5)),
