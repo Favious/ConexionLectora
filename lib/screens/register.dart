@@ -18,7 +18,7 @@ class _RegisterPageState extends State<RegisterPage > {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Flexible(
-                 child: Image.asset('../assets/conexion.png',
+                 child: Image.asset('assets/conexion.png',
                  height: 250.0,
                  ),
               ),

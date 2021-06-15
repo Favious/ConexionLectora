@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.conexion_lectora">
    <application
-        android:label="conexion_lectora"
+        android:label="Conexión Lectora"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity
