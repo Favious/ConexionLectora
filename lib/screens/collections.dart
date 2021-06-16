@@ -4,6 +4,9 @@ import 'package:conexion_lectora/screens/books.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CollectionsPage extends StatefulWidget {
   static String id = 'collections_page';
@@ -13,6 +16,13 @@ class CollectionsPage extends StatefulWidget {
 
 class _CollectionsPageState extends State<CollectionsPage>{
   String qrCode = 'Unknown';
+  String correo;
+  @override
+  void initState() {
+    super.initState();
+      correo= getStringValuesSF("correoUsuario");
+  }
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -69,6 +79,28 @@ class _CollectionsPageState extends State<CollectionsPage>{
       });
     } on PlatformException {
       qrCode = 'Failed to get platform version.';
+    }
+  }
+  getStringValuesSF(parametro) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String stringValue = prefs.getString(parametro);
+  return stringValue;
+  }
+  Future<void> importar(context, codigo) async {
+    var libro;
+    var user;
+    try {
+      Firestore.instance.collection('libros_semanal').where('categoria', isEqualTo: codigo)
+      .snapshots().listen(
+        (data) => libro = data.documents[0]
+      );
+      /*var collec=Firestore.instance.collection("usuarios");
+      collec.doc('doc_id').set(yourData, SetOptions(merge: true));*/
+ 
+
+    } catch(e) {
+
     }
   }
   }

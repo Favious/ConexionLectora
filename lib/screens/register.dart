@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
 
 class RegisterPage  extends StatefulWidget {
@@ -170,8 +171,8 @@ class _RegisterPageState extends State<RegisterPage > {
        AuthResult user =await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: correo, password: contras2
          );
-         Navigator.of(context).pushNamed(LoginPage.id);
-        print('valido la cuenta');
+         agregarUsuario();
+         Navigator.of(context).pushNamed(LoginPage.id); 
       }else{
       _showAlertDialogContras("las contraseñas no son iguales");
 
@@ -198,5 +199,18 @@ class _RegisterPageState extends State<RegisterPage > {
   }
   print(e.code);
   }
+}
+void agregarUsuario(){
+  print("agregarUsuario");
+  
+  Firestore.instance.collection("usuarios").add(
+  {
+    "correo" : correo,
+    "libros" : [
+      
+    ]
+  }).then((value){
+    //print(value.id);
+  });
 }
 }
