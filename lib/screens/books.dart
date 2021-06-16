@@ -37,8 +37,15 @@ class _ViewBookListState extends State<ViewBookList> {
           stream: query,
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data) {
             if (data.hasData) {
-              List<dynamic> libros = data.data.documents[0].data['libros'];
-
+              List<dynamic> dataList = data.data.documents[0].data['libros'];
+              List<dynamic> libros = [];
+              for (dynamic d in dataList) {
+                if (d['categoria'] == widget.categoria) {
+                  libros.add(d);
+                  print('Filtrando la lista');
+                  print(d['linkPDF']);
+                }
+              }
               if (libros == null || libros.isEmpty) {
                 return Center(
                   child: Text("No tiene libros en esta categoria."),
@@ -57,6 +64,8 @@ class _ViewBookListState extends State<ViewBookList> {
                     bookName: libro["titulo"],
                     authorName: libro["autor"],
                     percent: 10,
+                    ultimaPagina: libro['paginaActual'],
+                    url: libro['linkPDF'],
                   );
                 },
               );
@@ -80,10 +89,17 @@ class BookDescriptionButton extends StatelessWidget {
   final String coverPagePath;
   final String bookName;
   final String authorName;
+  final int ultimaPagina;
   final int percent;
+  final String url;
 
   const BookDescriptionButton(
-      {this.coverPagePath, this.bookName, this.authorName, this.percent});
+      {this.coverPagePath,
+      this.bookName,
+      this.authorName,
+      this.ultimaPagina,
+      this.percent,
+      this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +108,13 @@ class BookDescriptionButton extends StatelessWidget {
         child: SizedBox(
           child: TextButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(PDFView.id);
+              Route route = MaterialPageRoute(
+                  builder: (context) => PDFView(
+                        url: url,
+                        titulo: bookName,
+                        paginaActual: ultimaPagina,
+                      ));
+              Navigator.push(context, route);
             },
             style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(5)),

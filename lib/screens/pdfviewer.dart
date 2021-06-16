@@ -4,7 +4,13 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 void main() => runApp(PDFView());
 
 class PDFView extends StatefulWidget {
-  static String id = 'pdf_viewer_page';
+  final String url;
+  final String titulo;
+  final int paginaActual;
+  final String correo;
+
+  const PDFView({this.url, this.titulo, this.paginaActual, this.correo});
+
   @override
   _PDFViewState createState() => _PDFViewState();
 }
@@ -20,19 +26,17 @@ class _PDFViewState extends State<PDFView> {
   }
 
   loadDocument() async {
-    document = await PDFDocument.fromURL('https://germarmu.files.wordpress.com/2014/09/resumen-cien-ac3b1os-de-soledad-mc3a1rquez.pdf');
-
-
+    print(widget.url);
+    document = await PDFDocument.fromURL(widget.url);
     setState(() => _isLoading = false);
   }
-
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('FlutterPluginPDFViewer'),
+          title: Text(widget.titulo),
         ),
         body: Center(
           child: _isLoading
@@ -41,12 +45,12 @@ class _PDFViewState extends State<PDFView> {
                   document: document,
                   zoomSteps: 1,
                   //uncomment below line to preload all pages
-                   lazyLoad: false,
+                  lazyLoad: false,
                   // uncomment below line to scroll vertically
-                   scrollDirection: Axis.vertical,
+                  scrollDirection: Axis.vertical,
 
                   //uncomment below code to replace bottom navigation with your own
-                   navigationBuilder:
+                  navigationBuilder:
                       (context, page, totalPages, jumpToPage, animateToPage) {
                     return ButtonBar(
                       alignment: MainAxisAlignment.spaceEvenly,
@@ -77,10 +81,11 @@ class _PDFViewState extends State<PDFView> {
                         ),
                       ],
                     );
-                  }, 
+                  },
                 ),
         ),
-      ),theme: ThemeData(
+      ),
+      theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
     );
