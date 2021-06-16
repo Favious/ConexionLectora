@@ -4,12 +4,14 @@ import 'package:conexion_lectora/screens/books.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CollectionsPage extends StatefulWidget {
   static String id = 'collections_page';
+  final String correo;
+  const CollectionsPage(this.correo);
+
   @override
   _CollectionsPageState createState() => _CollectionsPageState();
 }
@@ -139,13 +141,6 @@ class _CollectionsPageState extends State<CollectionsPage> {
     } on PlatformException {
       qrCode = 'Failed to get platform version.';
     }
-  }
-
-  getStringValuesSF(parametro) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return String
-    String stringValue = prefs.getString(parametro);
-    return stringValue;
   }
 
   Future<void> importar(context, codigo) async {

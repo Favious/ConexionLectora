@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'collections.dart';
+import 'package:conexion_lectora/screens/collections.dart';
 import 'register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 
 class LoginPage  extends StatefulWidget {
  static String id = 'login_page';
@@ -54,7 +55,6 @@ class _LoginPageState extends State<LoginPage > {
             ),
             onChanged: (value){
               correo=value;
-
             },
           ) ,
         );
@@ -175,7 +175,8 @@ class _LoginPageState extends State<LoginPage > {
     email: correo,
     password: contrase
   );
-  Navigator.of(context).pushNamed(CollectionsPage.id);
+  Route route = MaterialPageRoute(builder: (context) => CollectionsPage(correo));
+  Navigator.push(context, route);
   //print('valido la cuenta');
   //print(user.toString());
   }catch (e) {
