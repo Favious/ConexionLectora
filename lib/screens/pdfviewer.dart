@@ -34,6 +34,7 @@ class _PDFViewState extends State<PDFView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text(widget.titulo),
@@ -74,9 +75,12 @@ class _PDFViewState extends State<PDFView> {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.last_page),
+                          icon: Icon(Icons.bookmark,
+                          color: Colors.red[900]
+                          ),
+                          
                           onPressed: () {
-                            jumpToPage(page: totalPages - 1);
+                            jumpToPage(page: widget.paginaActual - 1);
                           },
                         ),
                       ],
@@ -86,7 +90,8 @@ class _PDFViewState extends State<PDFView> {
         ),
       ),
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primaryColor: Theme.of(context).primaryColor,
+        accentColor: Theme.of(context).accentColor,
       ),
     );
   }
