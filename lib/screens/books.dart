@@ -30,7 +30,7 @@ class _ViewBookListState extends State<ViewBookList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Libros"),
+        title: Text(widget.categoria),
       ),
       body: Center(
         child: StreamBuilder(
