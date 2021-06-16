@@ -17,42 +17,101 @@ class CollectionsPage extends StatefulWidget {
 class _CollectionsPageState extends State<CollectionsPage> {
   String qrCode = 'Unknown';
   String correo;
+  Stream<QuerySnapshot> query;
+
   @override
   void initState() {
     super.initState();
-    correo = getStringValuesSF("correoUsuario");
+    correo = "aaa@gmail.com"; // getStringValuesSF("correoUsuario");
+    query = Firestore.instance
+        .collection('usuarios')
+        .where('correo', isEqualTo: correo)
+        .snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: new Column(
-        children: [
-          new Container(
-              padding: EdgeInsets.all(20),
-              child: Center(
-                  child: new Text(
-                "COLECCIONES",
-                style: new TextStyle(
-                  // fontFamily: 'Comic-Sans',
-                  fontSize: 30,
-                  color: const Color(0xFF4f1bb7),
-                  decoration: TextDecoration.none,
-                ),
-              ))),
-          new ButtonCollection(
-              name: "Academicos", bookCantity: 2, color: Color(0xFF33a198)),
-          new ButtonCollection(
-              name: "Interesantes", bookCantity: 0, color: Color(0xFF0566ab)),
-          new ButtonCollection(
-              name: "Entretenidos", bookCantity: 0, color: Color(0xFFd35ee6)),
-          new ButtonCollection(
-              name: "Curiosos", bookCantity: 0, color: Color(0xFFe3a412)),
-          new ButtonCollection(
-              name: "Historicos", bookCantity: 0, color: Color(0xFFf2e70c)),
-        ],
-        mainAxisSize: MainAxisSize.max,
+      body: StreamBuilder(
+        stream: query,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data) {
+          int academ = 0;
+          int inter = 0;
+          int entre = 0;
+          int curi = 0;
+          int histor = 0;
+
+          if (data.hasData) {
+            List<dynamic> libros = data.data.documents[0].data['libros'];
+            for (dynamic libro in libros) {
+              switch (libro['categoria']) {
+                case 'Academicos':
+                  academ++;
+                  break;
+                case 'Interesantes':
+                  inter++;
+                  break;
+                case 'Entretenidos':
+                  entre++;
+                  break;
+                case 'Curiosos':
+                  curi++;
+                  break;
+                case 'Historicos':
+                  histor++;
+                  break;
+                default:
+              }
+            }
+
+            return (new Column(
+              children: [
+                new Container(
+                    padding: EdgeInsets.all(20),
+                    child: Center(
+                        child: new Text(
+                      "COLECCIONES",
+                      style: new TextStyle(
+                        // fontFamily: 'Comic-Sans',
+                        fontSize: 30,
+                        color: const Color(0xFF4f1bb7),
+                        decoration: TextDecoration.none,
+                      ),
+                    ))),
+                new ButtonCollection(
+                    name: "Academicos",
+                    bookCantity: academ,
+                    color: Color(0xFF33a198)),
+                new ButtonCollection(
+                    name: "Interesantes",
+                    bookCantity: inter,
+                    color: Color(0xFF0566ab)),
+                new ButtonCollection(
+                    name: "Entretenidos",
+                    bookCantity: entre,
+                    color: Color(0xFFd35ee6)),
+                new ButtonCollection(
+                    name: "Curiosos",
+                    bookCantity: curi,
+                    color: Color(0xFFe3a412)),
+                new ButtonCollection(
+                    name: "Historicos",
+                    bookCantity: histor,
+                    color: Color(0xFFf2e70c)),
+              ],
+              mainAxisSize: MainAxisSize.max,
+            ));
+          }
+
+          if (data.hasError) {
+            return Center(
+              child: Text("Ocurrió un error."),
+            );
+          }
+
+          return CircularProgressIndicator();
+        },
       ),
       floatingActionButton: new FloatingActionButton(
         backgroundColor: const Color(0xFF4f1bb7),
