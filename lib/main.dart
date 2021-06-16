@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         LoginPage.id: (context) => LoginPage(),
         RegisterPage.id: (context) => RegisterPage(),
         CollectionsPage.id: (context) => CollectionsPage(),
-        ViewBookList.id: (context) => ViewBookList(),
+        ViewBookList.id: (context) => ViewBookList("Historia"),
         PDFView.id: (context) => PDFView()
       },
     );

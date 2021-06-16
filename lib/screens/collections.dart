@@ -11,49 +11,49 @@ class CollectionsPage extends StatefulWidget {
   _CollectionsPageState createState() => _CollectionsPageState();
 }
 
-class _CollectionsPageState extends State<CollectionsPage>{
+class _CollectionsPageState extends State<CollectionsPage> {
   String qrCode = 'Unknown';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: new Column(
-          children: [
-            new Container(
-                padding: EdgeInsets.all(20),
-                child: Center(
-                    child: new Text(
-                  "COLECCIONES",
-                  style: new TextStyle(
-                    // fontFamily: 'Comic-Sans',
-                    fontSize: 30,
-                    color: const Color(0xFF4f1bb7),
-                    decoration: TextDecoration.none,
-                  ),
-                ))),
-            new ButtonCollection(
-                name: "Academicos", bookCantity: 2, color: Color(0xFF33a198)),
-            new ButtonCollection(
-                name: "Interesantes", bookCantity: 0, color: Color(0xFF0566ab)),
-            new ButtonCollection(
-                name: "Entretenidos", bookCantity: 0, color: Color(0xFFd35ee6)),
-            new ButtonCollection(
-                name: "Curiosos", bookCantity: 0, color: Color(0xFFe3a412)),
-            new ButtonCollection(
-                name: "Historicos", bookCantity: 0, color: Color(0xFFf2e70c)),
-          ],
-          mainAxisSize: MainAxisSize.max,
-        ),
-        floatingActionButton: new FloatingActionButton(
-          backgroundColor: const Color(0xFF4f1bb7),
-          child: const Icon(Icons.qr_code),
-          onPressed: () => scanQRCode(),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      )
-      );
-    }
-    Future<void> scanQRCode() async {
+        child: Scaffold(
+      body: new Column(
+        children: [
+          new Container(
+              padding: EdgeInsets.all(20),
+              child: Center(
+                  child: new Text(
+                "COLECCIONES",
+                style: new TextStyle(
+                  // fontFamily: 'Comic-Sans',
+                  fontSize: 30,
+                  color: const Color(0xFF4f1bb7),
+                  decoration: TextDecoration.none,
+                ),
+              ))),
+          new ButtonCollection(
+              name: "Academicos", bookCantity: 2, color: Color(0xFF33a198)),
+          new ButtonCollection(
+              name: "Interesantes", bookCantity: 0, color: Color(0xFF0566ab)),
+          new ButtonCollection(
+              name: "Entretenidos", bookCantity: 0, color: Color(0xFFd35ee6)),
+          new ButtonCollection(
+              name: "Curiosos", bookCantity: 0, color: Color(0xFFe3a412)),
+          new ButtonCollection(
+              name: "Historicos", bookCantity: 0, color: Color(0xFFf2e70c)),
+        ],
+        mainAxisSize: MainAxisSize.max,
+      ),
+      floatingActionButton: new FloatingActionButton(
+        backgroundColor: const Color(0xFF4f1bb7),
+        child: const Icon(Icons.qr_code),
+        onPressed: () => scanQRCode(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    ));
+  }
+
+  Future<void> scanQRCode() async {
     try {
       final qrCode = await FlutterBarcodeScanner.scanBarcode(
         '#4f1bb7',
@@ -71,7 +71,7 @@ class _CollectionsPageState extends State<CollectionsPage>{
       qrCode = 'Failed to get platform version.';
     }
   }
-  }
+}
 
 class ButtonCollection extends StatelessWidget {
   final String name;
@@ -79,18 +79,18 @@ class ButtonCollection extends StatelessWidget {
   final Color color;
 
   const ButtonCollection({this.name, this.bookCantity, this.color});
-  // : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return new Container(
         padding: EdgeInsets.only(left: 15, right: 15, top: 15),
         child: new SizedBox(
-          // padding: EdgeInsets.only(left: 10, right: 10),
           height: 60,
           child: new TextButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(ViewBookList.id);
+              Route route =
+                  MaterialPageRoute(builder: (context) => ViewBookList(name));
+              Navigator.push(context, route);
             },
             style: new ButtonStyle(
                 padding:
