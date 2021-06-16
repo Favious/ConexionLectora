@@ -56,14 +56,14 @@ class _ViewBookListState extends State<ViewBookList> {
                 itemCount: libros.length,
                 itemBuilder: (context, i) {
                   dynamic libro = libros[i];
-                  // int paginaActual = int.parse(libro['paginaActual']);
-                  // int paginasTotales = int.parse(libro['numPaginasTotal']);
-                  // int percent = (paginaActual * 100 / paginasTotales) as int;
+                  int paginaActual = libro['paginaActual'];
+                  int paginasTotales = libro['numPaginasTotal'];
+                  int percent = (paginaActual * 100 / paginasTotales).round();
                   return BookDescriptionButton(
                     coverPagePath: libro['imagen'],
                     bookName: libro["titulo"],
                     authorName: libro["autor"],
-                    percent: 10,
+                    percent: percent,
                     ultimaPagina: libro['paginaActual'],
                     url: libro['linkPDF'],
                   );
