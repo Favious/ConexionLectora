@@ -10,6 +10,8 @@ class LoginPage  extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage > {
+  String correo="";
+  String contrase="";
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,6 +53,7 @@ class _LoginPageState extends State<LoginPage > {
               labelText: 'Correo Electronico',
             ),
             onChanged: (value){
+              correo=value;
 
             },
           ) ,
@@ -72,6 +75,7 @@ class _LoginPageState extends State<LoginPage > {
               labelText: 'Contraseña',
             ),
             onChanged: (value){
+              contrase=value;
 
             },
           ) ,
@@ -98,7 +102,8 @@ class _LoginPageState extends State<LoginPage > {
           elevation: 10.0,
           color: const Color(0xFF4f1bb7),
           onPressed: (){
-            Navigator.of(context).pushNamed(CollectionsPage.id);
+            signedIn(context);
+            //Navigator.of(context).pushNamed(CollectionsPage.id);
           }
         );
       }
@@ -129,28 +134,66 @@ class _LoginPageState extends State<LoginPage > {
       }
     );
   }
-}
-
-Future<void> signedIn(context) async {
+  void _showAlertDialogCorreo(mensaje) {
+    showDialog(
+      context: context,
+      builder: (buildcontext) {
+        return AlertDialog(
+          title: Text("Ocurrio un error"),
+          content: Text(mensaje),
+          actions: <Widget>[
+            RaisedButton(
+              child: Text("CERRAR", style: TextStyle(color: Colors.white),),
+              onPressed: (){ Navigator.of(context).pop(); },
+            )
+          ],
+        );
+      }
+    );
+  }
+  
+  void _showAlertDialogContras() {
+    showDialog(
+      context: context,
+      builder: (buildcontext) {
+        return AlertDialog(
+          title: Text("Ocurrio un error"),
+          content: Text("la contraseña es incorrecta"),
+          actions: <Widget>[
+            RaisedButton(
+              child: Text("CERRAR", style: TextStyle(color: Colors.white),),
+              onPressed: (){ Navigator.of(context).pop(); },
+            )
+          ],
+        );
+      }
+    );
+  }
+  Future<void> signedIn(context) async {
   try {
   AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-    email: "test123@gmail.com",
-    password: "test123"
+    email: correo,
+    password: contrase
   );
-  /*AuthResult user =await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    email: "nogalesrafael12@gmail.com", password: "test12345"
-    );*/
-  //BuildContext context;
-  //Navigator.push(context, MaterialPageRoute(builder: (context)=>Home_page()));
   Navigator.of(context).pushNamed(CollectionsPage.id);
-  print('valido la cuenta');
-  print(user.toString());
+  //print('valido la cuenta');
+  //print(user.toString());
   }catch (e) {
-  if (e.code == 'user-not-found') {
-    print('No user found for that email.');
-  } else if (e.code == 'wrong-password') {
-    print('Wrong password provided for that user.');
+    print(e.code);
+  if (e.code == 'ERROR_USER_NOT_FOUND') {
+    _showAlertDialogCorreo("no se encontro el correo");
+  } else if (e.code == 'ERROR_INVALID_EMAIL') {
+    _showAlertDialogCorreo("el correo es invalido");
+  } else if (e.code == 'ERROR_WRONG_PASSWORD') {
+    _showAlertDialogContras();
+  } else if (e.code == 'error'){
+    _showAlertDialogCorreo("Los campos no deben ser vacios");
+
+
   }
-  print('no se registro');
+  //print('no inicio sesion');
+  print(e.code);
   }
 }
+}
+

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
 
 class RegisterPage  extends StatefulWidget {
@@ -9,6 +10,9 @@ class RegisterPage  extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage > {
+  String correo="";
+  String contras1="";
+  String contras2="";
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -23,11 +27,11 @@ class _RegisterPageState extends State<RegisterPage > {
                  ),
               ),
               SizedBox(height: 15.0,),
-              _inputField('ejemplo@gmail.com', 'Ingrese su correo electronico'),
+              _inputFieldCorreo('ejemplo@gmail.com', 'Ingrese su correo electronico'),
               SizedBox(height: 15,),
-              _inputField('Contraseña', 'Ingrese una contraseña'),
+              _inputFieldContra('Contraseña', 'Ingrese una contraseña'),
               SizedBox(height: 15,),
-              _inputField('Contraseña', 'Confirme contraseña'),
+              _inputFieldContra2('Contraseña', 'Confirme contraseña'),
               SizedBox(height: 20.0,),
               _bottonRegistrarse(),
             ],
@@ -36,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage > {
        ),
       );
   }
-  Widget _inputField(String hint, String label){
+  Widget _inputFieldCorreo(String hint, String label){
     return StreamBuilder(
       builder:(BuildContext context, AsyncSnapshot snapchot){
         return Container(
@@ -48,6 +52,47 @@ class _RegisterPageState extends State<RegisterPage > {
               labelText: label,
             ),
             onChanged: (value){
+              correo= value;
+
+            },
+          ) ,
+        );
+      }
+    );
+  }
+  Widget _inputFieldContra(String hint, String label){
+    return StreamBuilder(
+      builder:(BuildContext context, AsyncSnapshot snapchot){
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal:20.0),
+          child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              hintText: hint,
+              labelText: label,
+            ),
+            onChanged: (value){
+              contras1= value;
+
+            },
+          ) ,
+        );
+      }
+    );
+  }
+  Widget _inputFieldContra2(String hint, String label){
+    return StreamBuilder(
+      builder:(BuildContext context, AsyncSnapshot snapchot){
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal:20.0),
+          child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              hintText: hint,
+              labelText: label,
+            ),
+            onChanged: (value){
+              contras2= value;
 
             },
           ) ,
@@ -74,33 +119,98 @@ class _RegisterPageState extends State<RegisterPage > {
           elevation: 10.0,
           color: const Color(0xFF4f1bb7),
           onPressed: (){
+            //print(correo+contras);
             signedIn(context);
+            
           }
         );
       }
     );
   }
-}
-Future<void> signedIn(context) async {
-  try {
-  /*AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-    email: "test123@gmail.com",
-    password: "test123"
-  );*/
-  AuthResult user =await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    email: "nogalesrafael12@gmail.com", password: "test12345"
+
+  void _showAlertDialogCorreo() {
+    showDialog(
+      context: context,
+      builder: (buildcontext) {
+        return AlertDialog(
+          title: Text("Ocurrio un error"),
+          content: Text("el correo electronico ya esta en uso"),
+          actions: <Widget>[
+            RaisedButton(
+              child: Text("CERRAR", style: TextStyle(color: Colors.white),),
+              onPressed: (){ Navigator.of(context).pop(); },
+            )
+          ],
+        );
+      }
     );
-  //BuildContext context;
-  //Navigator.push(context, MaterialPageRoute(builder: (context)=>Home_page()));
-  Navigator.of(context).pushNamed(LoginPage.id);
-  print('valido la cuenta');
-  print(user.toString());
+  }
+
+  void _showAlertDialogContras(mensaje) {
+    showDialog(
+      context: context,
+      builder: (buildcontext) {
+        return AlertDialog(
+          title: Text("Ocurrio un error"),
+          content: Text(mensaje),
+          actions: <Widget>[
+            RaisedButton(
+              child: Text("CERRAR", style: TextStyle(color: Colors.white),),
+              onPressed: (){ Navigator.of(context).pop(); },
+            )
+          ],
+        );
+      }
+    );
+  }
+  Future<void> signedIn(context) async {
+  try {
+    //print(correo+contras);
+    if(correo.endsWith("@gmail.com")){
+      if(contras1==contras2){
+       AuthResult user =await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: correo, password: contras2
+         );
+         agregarUsuario();
+         Navigator.of(context).pushNamed(LoginPage.id); 
+      }else{
+      _showAlertDialogContras("las contraseñas no son iguales");
+
+      }
+    }else{
+      _showAlertDialogContras("el correo no es valido");
+      
+    }
+    //print(correo+contras);
+
+
+  
+  
+  //print(user.toString());
   }catch (e) {
-  if (e.code == 'user-not-found') {
-    print('No user found for that email.');
-  } else if (e.code == 'wrong-password') {
-    print('Wrong password provided for that user.');
+  if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+    _showAlertDialogCorreo();
+    //print('No user found for that email.');
+  } else if (e.code == 'error') {
+    _showAlertDialogContras("los campos no debe ser vacios");
+    //print('Wrong password provided for that user.');
+  } else if (e.code== 'ERROR_WEAK_PASSWORD'){
+    _showAlertDialogContras("la contraseña es debil");
   }
-  print('no se registro');
+  print(e.code);
   }
+}
+void agregarUsuario(){
+  print("agregarUsuario");
+  
+  Firestore.instance.collection("usuarios").add(
+  {
+    "correo" : correo,
+    "libros" : [
+      
+    ]
+  }).then((value){
+    //print(value.id);
+  });
+}
 }
