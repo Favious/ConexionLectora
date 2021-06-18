@@ -1,6 +1,8 @@
+//import 'dart:html';
 import 'dart:ui';
 
 import 'package:conexion_lectora/screens/books.dart';
+import 'package:conexion_lectora/screens/weeklyBook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/services.dart';
@@ -18,16 +20,17 @@ class CollectionsPage extends StatefulWidget {
 
 class _CollectionsPageState extends State<CollectionsPage> {
   String qrCode = 'Unknown';
-  String correo;
+  String corre;
+  List<dynamic> listaLibros;
   Stream<QuerySnapshot> query;
 
   @override
   void initState() {
     super.initState();
-    correo = "aaa@gmail.com"; // getStringValuesSF("correoUsuario");
+    corre = widget.correo; // getStringValuesSF("correoUsuario");
     query = Firestore.instance
         .collection('usuarios')
-        .where('correo', isEqualTo: correo)
+        .where('correo', isEqualTo: corre)
         .snapshots();
   }
 
@@ -46,6 +49,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
 
           if (data.hasData) {
             List<dynamic> libros = data.data.documents[0].data['libros'];
+            listaLibros = libros;
             for (dynamic libro in libros) {
               switch (libro['categoria']) {
                 case 'Academicos':
@@ -137,25 +141,18 @@ class _CollectionsPageState extends State<CollectionsPage> {
 
       setState(() {
         this.qrCode = qrCode;
+        if(qrCode == 'Academicos' || 
+        qrCode == 'Historicos' ||
+        qrCode == 'Curiosos' ||
+        qrCode == 'Interesantes' ||
+        qrCode == 'Entretenidos') {
+          Route route = MaterialPageRoute(builder: (context) => WeeklyBookPage(qrCode, corre, listaLibros));
+          Navigator.push(context, route);
+        }
       });
     } on PlatformException {
       qrCode = 'Failed to get platform version.';
     }
-  }
-
-  Future<void> importar(context, codigo) async {
-    var libro;
-    var user;
-    try {
-      Firestore.instance
-          .collection('libros_semanal')
-          .where('categoria', isEqualTo: codigo)
-          .snapshots()
-          .listen((data) => libro = data.documents[0]);
-      /*var collec=Firestore.instance.collection("usuarios");
-      collec.doc('doc_id').set(yourData, SetOptions(merge: true));*/
-
-    } catch (e) {}
   }
 }
 
