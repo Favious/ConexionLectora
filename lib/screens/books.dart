@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ViewBookList extends StatefulWidget {
-  static String id = 'books_page';
   final String categoria;
-  const ViewBookList(this.categoria);
+  final String correo;
+  const ViewBookList(this.categoria, this.correo);
 
   @override
   _ViewBookListState createState() => _ViewBookListState();
@@ -13,17 +13,18 @@ class ViewBookList extends StatefulWidget {
 
 class _ViewBookListState extends State<ViewBookList> {
   Stream<QuerySnapshot> query;
-  String correo;
+  String id;
+  List<dynamic> dataList;
 
   @override
   void initState() {
     super.initState();
-    correo = "aaa@gmail.com"; // sharedpreferences
     query = Firestore.instance
         .collection('usuarios')
-        .where("correo", isEqualTo: correo)
+        .where("correo", isEqualTo: widget.correo)
         // .where("categoria", isEqualTo: widget.categoria)
         .snapshots();
+    dataList = [];
   }
 
   @override
@@ -37,13 +38,13 @@ class _ViewBookListState extends State<ViewBookList> {
           stream: query,
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data) {
             if (data.hasData) {
-              List<dynamic> dataList = data.data.documents[0].data['libros'];
+              id = data.data.documents[0].documentID;
+
+              dataList = data.data.documents[0].data['libros'];
               List<dynamic> libros = [];
               for (dynamic d in dataList) {
                 if (d['categoria'] == widget.categoria) {
                   libros.add(d);
-                  print('Filtrando la lista');
-                  print(d['linkPDF']);
                 }
               }
               if (libros == null || libros.isEmpty) {
@@ -56,16 +57,18 @@ class _ViewBookListState extends State<ViewBookList> {
                 itemCount: libros.length,
                 itemBuilder: (context, i) {
                   dynamic libro = libros[i];
-                  int paginaActual = libro['paginaActual'];
-                  int paginasTotales = libro['numPaginasTotal'];
+                  int paginaActual = int.parse(libro['paginaActual']);
+                  int paginasTotales = int.parse(libro['numPaginasTotal']);
                   int percent = (paginaActual * 100 / paginasTotales).round();
                   return BookDescriptionButton(
                     coverPagePath: libro['imagen'],
                     bookName: libro["titulo"],
                     authorName: libro["autor"],
                     percent: percent,
-                    ultimaPagina: libro['paginaActual'],
+                    ultimaPagina: paginaActual,
                     url: libro['linkPDF'],
+                    documentID: id,
+                    listaLibros: dataList,
                   );
                 },
               );
@@ -92,6 +95,8 @@ class BookDescriptionButton extends StatelessWidget {
   final int ultimaPagina;
   final int percent;
   final String url;
+  final String documentID;
+  final List<dynamic> listaLibros;
 
   const BookDescriptionButton(
       {this.coverPagePath,
@@ -99,7 +104,9 @@ class BookDescriptionButton extends StatelessWidget {
       this.authorName,
       this.ultimaPagina,
       this.percent,
-      this.url});
+      this.url,
+      this.documentID,
+      this.listaLibros});
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +120,8 @@ class BookDescriptionButton extends StatelessWidget {
                         url: url,
                         titulo: bookName,
                         paginaActual: ultimaPagina,
+                        documentID: documentID,
+                        listaLibros: listaLibros,
                       ));
               Navigator.push(context, route);
             },

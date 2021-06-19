@@ -88,23 +88,28 @@ class _CollectionsPageState extends State<CollectionsPage> {
                 new ButtonCollection(
                     name: "Academicos",
                     bookCantity: academ,
-                    color: Color(0xFF33a198)),
+                    color: Color(0xFF33a198),
+                    correo: widget.correo),
                 new ButtonCollection(
                     name: "Interesantes",
                     bookCantity: inter,
-                    color: Color(0xFF0566ab)),
+                    color: Color(0xFF0566ab),
+                    correo: widget.correo),
                 new ButtonCollection(
                     name: "Entretenidos",
                     bookCantity: entre,
-                    color: Color(0xFFd35ee6)),
+                    color: Color(0xFFd35ee6),
+                    correo: widget.correo),
                 new ButtonCollection(
                     name: "Curiosos",
                     bookCantity: curi,
-                    color: Color(0xFFe3a412)),
+                    color: Color(0xFFe3a412),
+                    correo: widget.correo),
                 new ButtonCollection(
                     name: "Historicos",
                     bookCantity: histor,
-                    color: Color(0xFFf2e70c)),
+                    color: Color(0xFFf2e70c),
+                    correo: widget.correo),
               ],
               mainAxisSize: MainAxisSize.max,
             ));
@@ -141,12 +146,13 @@ class _CollectionsPageState extends State<CollectionsPage> {
 
       setState(() {
         this.qrCode = qrCode;
-        if(qrCode == 'Academicos' || 
-        qrCode == 'Historicos' ||
-        qrCode == 'Curiosos' ||
-        qrCode == 'Interesantes' ||
-        qrCode == 'Entretenidos') {
-          Route route = MaterialPageRoute(builder: (context) => WeeklyBookPage(qrCode, corre, listaLibros));
+        if (qrCode == 'Academicos' ||
+            qrCode == 'Historicos' ||
+            qrCode == 'Curiosos' ||
+            qrCode == 'Interesantes' ||
+            qrCode == 'Entretenidos') {
+          Route route = MaterialPageRoute(
+              builder: (context) => WeeklyBookPage(qrCode, corre, listaLibros));
           Navigator.push(context, route);
         }
       });
@@ -160,8 +166,10 @@ class ButtonCollection extends StatelessWidget {
   final String name;
   final int bookCantity;
   final Color color;
+  final String correo;
 
-  const ButtonCollection({this.name, this.bookCantity, this.color});
+  const ButtonCollection(
+      {this.name, this.bookCantity, this.color, this.correo});
 
   @override
   Widget build(BuildContext context) {
@@ -171,8 +179,11 @@ class ButtonCollection extends StatelessWidget {
           height: 60,
           child: new TextButton(
             onPressed: () {
-              Route route =
-                  MaterialPageRoute(builder: (context) => ViewBookList(name));
+              Route route = MaterialPageRoute(
+                  builder: (context) => ViewBookList(
+                        name,
+                        correo,
+                      ));
               Navigator.push(context, route);
             },
             style: new ButtonStyle(

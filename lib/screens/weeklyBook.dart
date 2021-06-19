@@ -17,7 +17,8 @@ class WeeklyBookPage extends StatefulWidget {
 
 class _WeeklyBookPage extends State<WeeklyBookPage> {
   String titulo = "Taller de BD";
-  String portada = "https://imagessl3.casadellibro.com/a/l/t7/13/9788483468913.jpg";
+  String portada =
+      "https://imagessl3.casadellibro.com/a/l/t7/13/9788483468913.jpg";
   var libro;
   var query;
   var query2;
@@ -38,77 +39,104 @@ class _WeeklyBookPage extends State<WeeklyBookPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(stream: query, builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
-        if(data.hasData) {
-          libro = data.data.documents[0].data;
-        return Scaffold(
-          appBar: AppBar(
-              title: Text(titulo),
-            ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                    child: Image.network(portada,
-                    height: 500.0,
-                    ),
+    return StreamBuilder(
+        stream: query,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data) {
+          if (data.hasData) {
+            libro = data.data.documents[0].data;
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text(titulo),
                 ),
-                SizedBox(height: 20.0,),
-                _botonRetorno()
-                ]
-              ),
-            )
+                body: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Image.network(
+                            portada,
+                            height: 500.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        _botonRetorno()
+                      ]),
+                ));
+          }
+          return Center(
+            child: CircularProgressIndicator(),
           );
-        }
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-    );
+        });
   }
 
-  Widget _botonRetorno(){
-    return StreamBuilder(stream: query2,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-        id = snapshot.data.documents[0].documentID;
-        return RaisedButton(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-            child: Text(
-              'Guardar',
-              style: TextStyle(
-                color: Colors.white,
+  Widget _botonRetorno() {
+    return StreamBuilder(
+        stream: query2,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          id = snapshot.data.documents[0].documentID;
+          return RaisedButton(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+                child: Text('Guardar',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 10.0,
+              color: const Color(0xFF4f1bb7),
+              onPressed: () {
+                List<dynamic> nLibros = [];
+                for (dynamic libri in widget.libros) {
+                  nLibros.add(libri);
+                }
+                bool repetido = false;
+                for (dynamic libri in widget.libros) {
+                  if (libri['linkPDF'] == libro['linkPDF']) {
+                    repetido = true;
+                  }
+                }
+                if (!repetido) {
+                  nLibros.add(libro);
+                  Firestore.instance
+                      .collection('usuarios')
+                      .document(id)
+                      .setData({'correo': widget.correo, 'libros': nLibros});
+                  _showAlertDialogContras(
+                      "Exito!", "El libro fue guardado exitosamente");
+                } else {
+                  _showAlertDialogContras(
+                      "Atencion", "Este libro ya fue agregado");
+                }
+
+                //Navigator.of(context).pushNamed(CollectionsPage.id);
+              });
+        });
+  }
+
+  void _showAlertDialogContras(titulo, mensaje) {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return AlertDialog(
+            title: Text(titulo),
+            content: Text(mensaje),
+            actions: <Widget>[
+              RaisedButton(
+                child: Text(
+                  "CERRAR",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               )
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          elevation: 10.0,
-          color: const Color(0xFF4f1bb7),
-          onPressed: (){
-            List<dynamic> nLibros = [];
-            for(dynamic libri in widget.libros) {
-              nLibros.add(libri);
-            }
-            bool repetido = false;
-            for(dynamic libri in widget.libros) {
-              if(libri['linkPDF'] == libro['linkPDF']) {
-                repetido = true;
-              }
-            }
-            if(!repetido) {
-              nLibros.add(libro);    
-            }
-            print(id);
-            Firestore.instance.collection('usuarios').document(id).setData(
-              {'correo': widget.correo, 'libros': nLibros} 
-            );
-            //Navigator.of(context).pushNamed(CollectionsPage.id);
-          }
-        );
-      }
-    );
+            ],
+          );
+        });
   }
 }
